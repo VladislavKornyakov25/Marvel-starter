@@ -1,5 +1,3 @@
-
-
 class MarevelService {
     _apiBAse = 'https://gateway.marvel.com:443/v1/public/';
     _apiKey = 'apikey=53ce06b11c9f1f53d6d3422ecf314d54';
@@ -11,12 +9,24 @@ class MarevelService {
         return await res.json();
     }
 
-    getAllCharacters = () => {
-        return this.getResource(`${this._apiBAse}characters?limit=9&offset=210&${this._apiKey}`);
+    getAllCharacters = async () => {
+        const res = this.getResource(`${this._apiBAse}characters?limit=9&offset=210&${this._apiKey}`);
+        return res.data.results.map(this._transformCharacter)
     }
 
-    getCharacter = (id) => {
-        return this.getResource(`${this._apiBAse}characters/${id}?&${this._apiKey}`);
+    getCharacter = async (id) => {
+        const res = await this.getResource(`${this._apiBAse}characters/${id}?&${this._apiKey}`);
+        return this._transformCharacter(res.data.results[0]);
+    }
+
+    _transformCharacter = (char) => {        
+        return {
+            name: char.name,
+            description: description ? `${char.description.slice(0,255)}...` : 'There is no character discription',
+            thumbnail: char.thumbnail.path + '.' + char.thumbnail.extension,
+            homepage:char.urls[0].url,
+            wiki: char.urls[1].url
+        }
     }
 }
 
