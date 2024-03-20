@@ -6,12 +6,7 @@ import MarevelService from '../../services/MarvelService';
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 
-class RandomChar extends Component {
-    constructor(props) {
-        super(props);
-        this.updateChar();
-    }
-    
+class RandomChar extends Component {   
     state = {
         char: {},
         loading: true,
@@ -19,7 +14,16 @@ class RandomChar extends Component {
     }
 
     marvelService = new MarevelService();
+
+    componentDidMount() {
+        this.updateChar();
+        // this.timerId = setInterval(this.updateChar, 3000);
+    }
     
+    componentWillUnmount() {
+        clearInterval(this.timerId);
+    }
+
     onCharLoaded = (char) => {
         this.setState({
             char, 
