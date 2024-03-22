@@ -26,7 +26,7 @@ class CharInfo extends Component {
             this.updateChar();
         }
     }
-
+    
     updateChar = () => {
         const {charId} = this.props;
         if (!charId) {
@@ -38,6 +38,8 @@ class CharInfo extends Component {
         this.marvelService.getCharacter(charId)
             .then(this.onCharLoaded)
             .catch(this.onError);
+
+            this.foo.bar = 0;
     }
 
     onCharLoaded = (char) => {
@@ -109,7 +111,7 @@ const View = ({char}) => {
             </div>
             <div className="char__comics">Comics:</div>
             <ul className="char__comics-list">
-                {comics.length === 0 ? 'No comics' : null}
+                {comics.length === 0 ? 'There is no comics for this character' : null}
                 {
                     comics.slice(0,10).map((item, i) => {                       
                         return (
