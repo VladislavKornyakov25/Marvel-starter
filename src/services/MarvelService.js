@@ -3,6 +3,8 @@ import { logDOM } from "@testing-library/react";
 class MarvelService {
     _apiBase = 'https://gateway.marvel.com:443/v1/public/';
     _apiKey = 'apikey=53ce06b11c9f1f53d6d3422ecf314d54';
+    _baseOffset = 210;
+    
     getResource = async (url) => {              
         const res = await fetch(url);
         if (!res.ok) {
@@ -11,8 +13,8 @@ class MarvelService {
         return await res.json();
     }
 
-    getAllCharacters = async () => {
-        const res = await this.getResource(`${this._apiBase}characters?limit=9&offset=210&${this._apiKey}`); 
+    getAllCharacters = async (offset = this._baseOffset) => {
+        const res = await this.getResource(`${this._apiBase}characters?limit=9&offset=${offset}&${this._apiKey}`); 
         return res.data.results.map(this._transformCharacter);        
     }
 
