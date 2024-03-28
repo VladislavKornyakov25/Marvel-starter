@@ -8,7 +8,7 @@ import ErrorMessage from '../errorMessage/ErrorMessage';
 
 const RandomChar = () => {   
     
-    const [char, setChar] = useState({});
+    const [char, setChar] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
 
@@ -16,6 +16,11 @@ const RandomChar = () => {
 
     useEffect(() => {
         updateChar();
+        const timerId = setInterval(updateChar, 60000);
+
+        return () => {
+            clearInterval(timerId)
+        }
     }, []);
 
     const onCharLoaded = (char) => {       
@@ -24,7 +29,7 @@ const RandomChar = () => {
     }
 
     const onCharLoading = () => {        
-        setLoading(loading => false)
+        setLoading(loading => true)
     }
 
     const onError = () => {        
@@ -65,7 +70,7 @@ const RandomChar = () => {
             </div>
         </div>
     )
-        
+
 }
 
 const View = ({char}) => {

@@ -39,7 +39,7 @@ const CharInfo = (props) => {
     }
 
     const onCharLoading = () => {        
-        setLoading(loading => false);
+        setLoading(loading => true);
     }
 
     const onError = () => {       
