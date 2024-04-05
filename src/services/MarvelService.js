@@ -18,9 +18,19 @@ const useMarvelService = () => {
         const res = await request(`${_apiBase}characters/${id}?&${_apiKey}`); 
         return _transformCharacter(res.data.results[0]);
     }
+    //https://gateway.marvel.com:443/v1/public/characters?name=Thor&apikey=53ce06b11c9f1f53d6d3422ecf314d54
+    const getCharacterByName = async (name) => {
+        console.log('getCharacterByName name= ' + name);
+        if (name) {
+            const res = await request(`${_apiBase}characters?name=${name}&${_apiKey}`);     
+            // console.log('res = ' + JSON.stringify(res.data.results[0].thumbnail));   
+            return _transformCharacter(res.data.results[0]);
+        }
+        return null;
+       
+    }
 
-    const getAllComics = async (offset = 0) => {
-        console.log('getAllComics offset = ' + offset);
+    const getAllComics = async (offset = 0) => {        
         const res = await request(`${_apiBase}comics?limit=8&&offset=${offset}&${_apiKey}`);
         return res.data.results.map(_transformComic);
     }
@@ -30,15 +40,20 @@ const useMarvelService = () => {
 		return _transformComic(res.data.results[0]);
 	};
 
-    const _transformCharacter = (char) => {               
-        return {
-            id: char.id,
-            name: char.name,
-            description: char.description ? `${char.description.slice(0,255)}...` : 'There is no character discription',
-            thumbnail: char.thumbnail.path + '.' + char.thumbnail.extension,
-            homepage:char.urls[0].url,
-            wiki: char.urls[1].url,
-            comics: char.comics.items
+    const _transformCharacter = (char) => { 
+        console.log('- ' + char);              
+        if (char) {
+            return {
+                id: char.id,
+                name: char.name,
+                description: char.description ? `${char.description.slice(0,255)}...` : 'There is no character discription',
+                thumbnail: char.thumbnail.path + '.' + char.thumbnail.extension,
+                homepage:char.urls[0].url,
+                wiki: char.urls[1].url,
+                comics: char.comics.items
+            }
+        } else {
+            return null;
         }
     }
 
@@ -54,7 +69,7 @@ const useMarvelService = () => {
         }
     }
 
-    return {loading, error, getAllCharacters, getCharacter, getAllComics, getComic, clearError}
+    return {loading, error, getAllCharacters, getCharacter, getCharacterByName, getAllComics, getComic, clearError}
 }
 
 export default useMarvelService;
