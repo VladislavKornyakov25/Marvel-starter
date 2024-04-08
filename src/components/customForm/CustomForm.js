@@ -1,4 +1,4 @@
-import { Formik, Form, Field, ErrorMessage, useField } from 'formik';
+import { Formik, Form, useField } from 'formik';
 import * as Yup from 'yup';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
@@ -32,13 +32,13 @@ const MyTextInput = ({label, ...props}) => {
 
 
 const CustomForm = () => {
-    const {loading, error, clearError, getCharacterByName} =  useMarvelService();
+    const {clearError, getCharacterByName} =  useMarvelService();
     const [character, setCharacter] = useState();
     const [response, setResponse] = useState(null);   
     
-    useEffect(() => {    
-        console.log('useEffect');    
+    useEffect(() => {
         onRequest(character);
+        // eslint-disable-next-line
     }, []); 
 
     const onRequest = (character) => {
